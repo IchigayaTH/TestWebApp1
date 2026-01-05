@@ -15,12 +15,17 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 20px 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
-            max-width: 1400px;
             margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         .header {
@@ -34,69 +39,128 @@
         .header h1 {
             color: #333;
             margin-bottom: 10px;
+            font-size: 1.8em;
         }
 
         .header p {
             color: #666;
-            font-size: 0.95em;
+            font-size: 0.85em;
         }
 
-        .section {
+        .main-section {
             background: white;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
         }
 
-        .section h2 {
+        .converter-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .converter-column {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .converter-column h3 {
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            font-size: 0.85em;
+            text-align: center;
             padding-bottom: 10px;
             border-bottom: 2px solid #667eea;
         }
 
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .tab-btn {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            color: #666;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
+        .converter-column label {
             display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.8em;
+        }
+
+        .label-with-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .label-with-button label {
+            margin-bottom: 0;
+        }
+
+        .column-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .column-btn {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 0.8em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .column-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .column-btn:active {
+            transform: translateY(0);
+        }
+
+        .column-btn.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .column-btn.secondary:hover {
+            background: #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .column-btn.copy {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .column-btn.copy:hover {
+            background: #e0e0e0;
         }
 
         textarea {
-            width: 100%;
-            min-height: 200px;
+            flex: 1;
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            resize: vertical;
+            font-size: 0.85em;
+            resize: none;
             transition: all 0.3s;
+            min-height: 0;
         }
 
         textarea:focus {
@@ -105,40 +169,17 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .button-group {
-            display: flex;
-            gap: 10px;
+        textarea[readonly] {
+            background: #f8f9fa;
+            color: #555;
+        }
+
+
+
+        .messages {
             margin-top: 15px;
-        }
-
-        button {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #e0e0e0;
+            text-align: center;
+            min-height: 20px;
         }
 
         .info-message {
@@ -148,6 +189,7 @@
             border-radius: 4px;
             margin-bottom: 15px;
             color: #1976d2;
+            text-align: left;
         }
 
         .error-message {
@@ -157,6 +199,7 @@
             border-radius: 4px;
             margin-bottom: 15px;
             color: #c62828;
+            text-align: left;
         }
 
         .success-message {
@@ -166,29 +209,21 @@
             border-radius: 4px;
             margin-bottom: 15px;
             color: #2e7d32;
+            text-align: left;
         }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 900px) {
-            .grid-2 {
+        @media (max-width: 1200px) {
+            .converter-container {
                 grid-template-columns: 1fr;
             }
-        }
 
-        .copy-btn {
-            padding: 6px 12px;
-            font-size: 0.85em;
-            background: #f0f0f0;
-            color: #333;
-        }
+            .button-container {
+                flex-direction: column;
+            }
 
-        .copy-btn:hover {
-            background: #e0e0e0;
+            .button-container button {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -196,64 +231,53 @@
     <div class="container">
         <div class="header">
             <h1>🎵 ポイント取引管理ツール</h1>
-            <p>JSONからCSVへの変換、タイムゾーン調整、データ変換を一括処理</p>
+            <p>JSONを入力して変換実行ボタンをクリックすると、CSVとレポートが同時に生成されます</p>
         </div>
 
-        <div class="section">
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="step1">ステップ1: JSON→CSV</button>
-                <button class="tab-btn" data-tab="step2">ステップ2: CSV→レポート</button>
+        <div class="main-section">
+            <div class="info-message">
+                ℹ️ JSON配列を左のテキストボックスに貼り付けて「変換実行」をクリックしてください。自動的にCSVとレポート形式に変換されます。「Add Point by QR Code」を含む項目は、タイムゾーンが自動調整されます。
             </div>
 
-            <!-- Step 1: JSON to CSV -->
-            <div id="step1" class="tab-content active">
-                <h2>ステップ1: JSONをCSVに変換</h2>
-                <div class="info-message">
-                    ℹ️ JSON配列を貼り付けてください。「Add Point by QR Code」を含む項目のタイムゾーン（+00:00 → +07:00）を自動調整します。
-                </div>
-                
-                <label style="display: block; margin-bottom: 8px; font-weight: 600;">入力JSON:</label>
-                <textarea id="inputJson" placeholder='[{"id": "1", "created_at": "...", "reason": "...", "band_id": "...", ...}]'></textarea>
-                
-                <div class="button-group">
-                    <button onclick="executeStep1()">変換実行</button>
-                    <button class="btn-secondary" onclick="clearStep1()">クリア</button>
+            <!-- 3列レイアウト -->
+            <div class="converter-container">
+                <!-- 左列：入力JSON -->
+                <div class="converter-column">
+                    <h3>📥 ステップ1: JSON</h3>
+                    <label>入力JSON配列:</label>
+                    <textarea id="inputJson" placeholder='[{"id": "1", "created_at": "2024-01-01T10:00:00+00:00", "reason": "Add Point by QR Code", "band_id": "3ff82f7d-337a-448e-9326-a5452b94ada3", "amount": "1000", "points_change": "100"}]'></textarea>
+                    <div class="column-buttons">
+                        <button class="column-btn" onclick="executeFullConversion()">変換実行</button>
+                        <button class="column-btn secondary" onclick="clearAll()">クリア</button>
+                    </div>
                 </div>
 
-                <div id="step1Messages"></div>
-
-                <label style="display: block; margin: 20px 0 8px 0; font-weight: 600;">出力CSV:</label>
-                <textarea id="outputCsv" readonly placeholder="結果がここに表示されます"></textarea>
-                
-                <div class="button-group">
-                    <button class="copy-btn" onclick="copyCsv()">📋 CSVをコピー</button>
-                </div>
-            </div>
-
-            <!-- Step 2: CSV to Report -->
-            <div id="step2" class="tab-content">
-                <h2>ステップ2: CSVをレポートに変換</h2>
-                <div class="info-message">
-                    ℹ️ ステップ1で生成したCSVを貼り付けるか、別のCSVを入力してください。レポート形式（タブ区切り）に変換します。
+                <!-- 中央列：CSV結果 -->
+                <div class="converter-column">
+                    <h3>📊 ステップ2: CSV</h3>
+                    <div class="label-with-button">
+                        <label>出力CSV:</label>
+                    </div>
+                    <textarea id="outputCsv" readonly placeholder="CSVが自動生成されます"></textarea>
+                    <div class="column-buttons">
+                        <button class="column-btn copy" onclick="copyCsv()">📋 コピー</button>
+                    </div>
                 </div>
 
-                <label style="display: block; margin-bottom: 8px; font-weight: 600;">入力CSV:</label>
-                <textarea id="inputCsv" placeholder="CSVデータを貼り付けてください（ステップ1の出力を使用）"></textarea>
-                
-                <div class="button-group">
-                    <button onclick="executeStep2()">変換実行</button>
-                    <button class="btn-secondary" onclick="clearStep2()">クリア</button>
-                </div>
-
-                <div id="step2Messages"></div>
-
-                <label style="display: block; margin: 20px 0 8px 0; font-weight: 600;">出力レポート (タブ区切り):</label>
-                <textarea id="outputReport" readonly placeholder="結果がここに表示されます"></textarea>
-                
-                <div class="button-group">
-                    <button class="copy-btn" onclick="copyReport()">📋 レポートをコピー</button>
+                <!-- 右列：レポート結果 -->
+                <div class="converter-column">
+                    <h3>📈 ステップ3: レポート</h3>
+                    <div class="label-with-button">
+                        <label>出力レポート:</label>
+                    </div>
+                    <textarea id="outputReport" readonly placeholder="レポートが自動生成されます"></textarea>
+                    <div class="column-buttons">
+                        <button class="column-btn copy" onclick="copyReport()">📋 コピー</button>
+                    </div>
                 </div>
             </div>
+
+            <div id="messages" class="messages"></div>
         </div>
     </div>
 
@@ -271,18 +295,11 @@
             "157df557-17fc-47fd-a9de-b42b83510fc2": "8.Terashi"
         };
 
-        // Tab switching
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const tabName = e.target.dataset.tab;
-                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById(tabName).classList.add('active');
-                e.target.classList.add('active');
-            });
-        });
+        function showMessage(message, type = 'info') {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
+        }
 
-        // Step 1: JSON to CSV
         function adjustCreatedAtOffsets(jsonStr) {
             const lines = jsonStr.split('\n');
             const result = [];
@@ -291,17 +308,14 @@
             for (let line of lines) {
                 const trimmed = line.trim();
 
-                // Check for "reason" field with "Add Point by QR Code"
                 if (trimmed.startsWith('"reason"')) {
                     isQrBlock = trimmed.toLowerCase().includes('add point by qr code');
                 }
 
-                // Adjust created_at offset if in QR block
                 if (isQrBlock && trimmed.startsWith('"created_at"') && trimmed.includes('+00:00')) {
                     line = line.replace('+00:00', '+07:00');
                 }
 
-                // Reset flag at object end
                 if (trimmed.startsWith('},')) {
                     isQrBlock = false;
                 }
@@ -319,7 +333,6 @@
                 const date = new Date(dateStr);
                 if (isNaN(date.getTime())) return dateStr;
 
-                // Convert to Thailand timezone (UTC+7)
                 const thaiDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
                 
                 const year = thaiDate.getFullYear();
@@ -339,83 +352,6 @@
             return '"' + (field || '').replace(/"/g, '""') + '"';
         }
 
-        function executeStep1() {
-            const messagesDiv = document.getElementById('step1Messages');
-            messagesDiv.innerHTML = '';
-
-            try {
-                const input = document.getElementById('inputJson').value.trim();
-                if (!input) {
-                    messagesDiv.innerHTML = '<div class="error-message">JSONを入力してください。</div>';
-                    return;
-                }
-
-                // Adjust offsets
-                const adjusted = adjustCreatedAtOffsets(input);
-
-                // Parse JSON
-                let jsonArray;
-                try {
-                    jsonArray = JSON.parse(adjusted);
-                } catch (e) {
-                    messagesDiv.innerHTML = `<div class="error-message">❌ JSONのパースに失敗しました: ${e.message}</div>`;
-                    return;
-                }
-
-                if (!Array.isArray(jsonArray) || jsonArray.length === 0) {
-                    document.getElementById('outputCsv').value = '';
-                    messagesDiv.innerHTML = '<div class="error-message">JSON配列が空です。</div>';
-                    return;
-                }
-
-                // Get columns from first object
-                const columns = Object.keys(jsonArray[0]);
-
-                // Build CSV
-                const csvLines = [];
-                csvLines.push(columns.map(c => quoteField(c)).join(','));
-
-                for (const obj of jsonArray) {
-                    const values = [];
-                    for (const col of columns) {
-                        if (col === 'created_at') {
-                            const raw = obj[col] || '';
-                            const converted = convertUtcToThai(raw);
-                            values.push(quoteField(converted));
-                        } else {
-                            const val = obj[col] === null ? '' : String(obj[col] || '');
-                            values.push(quoteField(val));
-                        }
-                    }
-                    csvLines.push(values.join(','));
-                }
-
-                const csv = csvLines.join('\n');
-                document.getElementById('outputCsv').value = csv;
-                messagesDiv.innerHTML = `<div class="success-message">✅ ${jsonArray.length}件のデータを変換しました。</div>`;
-            } catch (error) {
-                messagesDiv.innerHTML = `<div class="error-message">❌ エラー: ${error.message}</div>`;
-            }
-        }
-
-        function clearStep1() {
-            document.getElementById('inputJson').value = '';
-            document.getElementById('outputCsv').value = '';
-            document.getElementById('step1Messages').innerHTML = '';
-        }
-
-        function copyCsv() {
-            const csv = document.getElementById('outputCsv').value;
-            if (!csv) {
-                alert('コピーする内容がありません。');
-                return;
-            }
-            navigator.clipboard.writeText(csv).then(() => {
-                alert('CSVをクリップボードにコピーしました。');
-            });
-        }
-
-        // Step 2: CSV to Report
         function splitCsvLine(line) {
             const result = [];
             let current = '';
@@ -441,27 +377,60 @@
             return result;
         }
 
-        function executeStep2() {
-            const messagesDiv = document.getElementById('step2Messages');
+        function executeFullConversion() {
+            const messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML = '';
 
             try {
-                let csvInput = document.getElementById('inputCsv').value.trim();
-
-                // If empty, try to use output from step 1
-                if (!csvInput) {
-                    csvInput = document.getElementById('outputCsv').value.trim();
-                    if (!csvInput) {
-                        messagesDiv.innerHTML = '<div class="error-message">入力CSVが空です。</div>';
-                        return;
-                    }
-                }
-
-                const lines = csvInput.split(/\r?\n/).filter(l => l.trim());
-                if (lines.length <= 1) {
-                    messagesDiv.innerHTML = '<div class="error-message">有効なデータ行がありません。</div>';
+                const input = document.getElementById('inputJson').value.trim();
+                if (!input) {
+                    showMessage('❌ JSONを入力してください。', 'error');
                     return;
                 }
+
+                // ステップ1: JSONをCSVに変換
+                const adjusted = adjustCreatedAtOffsets(input);
+
+                let jsonArray;
+                try {
+                    jsonArray = JSON.parse(adjusted);
+                } catch (e) {
+                    showMessage(`❌ JSONのパースに失敗しました: ${e.message}`, 'error');
+                    return;
+                }
+
+                if (!Array.isArray(jsonArray) || jsonArray.length === 0) {
+                    document.getElementById('outputCsv').value = '';
+                    document.getElementById('outputReport').value = '';
+                    showMessage('❌ JSON配列が空です。', 'error');
+                    return;
+                }
+
+                // CSV生成
+                const columns = Object.keys(jsonArray[0]);
+                const csvLines = [];
+                csvLines.push(columns.map(c => quoteField(c)).join(','));
+
+                for (const obj of jsonArray) {
+                    const values = [];
+                    for (const col of columns) {
+                        if (col === 'created_at') {
+                            const raw = obj[col] || '';
+                            const converted = convertUtcToThai(raw);
+                            values.push(quoteField(converted));
+                        } else {
+                            const val = obj[col] === null ? '' : String(obj[col] || '');
+                            values.push(quoteField(val));
+                        }
+                    }
+                    csvLines.push(values.join(','));
+                }
+
+                const csv = csvLines.join('\n');
+                document.getElementById('outputCsv').value = csv;
+
+                // ステップ2: CSVをレポートに変換
+                const lines = csv.split(/\r?\n/).filter(l => l.trim());
 
                 // Parse header
                 const headerCols = splitCsvLine(lines[0]).map(h => h.trim().replace(/^"|"$/g, ''));
@@ -472,7 +441,7 @@
                 const idxBandId = headerCols.indexOf('band_id');
 
                 if (idxCreatedAt < 0 || idxAmount < 0 || idxPointsChange < 0 || idxReason < 0 || idxBandId < 0) {
-                    messagesDiv.innerHTML = '<div class="error-message">❌ 必要な列（created_at, amount, points_change, reason, band_id）がCSVに含まれていません。</div>';
+                    showMessage('❌ 必要な列が見つかりません。', 'error');
                     return;
                 }
 
@@ -492,10 +461,8 @@
                     const reason = idxReason < cols.length ? cols[idxReason].replace(/"/g, '').trim() : '';
                     const bandId = idxBandId < cols.length ? cols[idxBandId].replace(/"/g, '').trim() : '';
 
-                    // Determine band name
                     const bandName = BAND_MAPPING[bandId] || '99.Unknown';
 
-                    // Determine description and method
                     let description, method;
                     if (reason.toLowerCase().includes('ticket amount')) {
                         description = '1.Ticket';
@@ -529,26 +496,43 @@
 
                 const report = reportLines.join('\n');
                 document.getElementById('outputReport').value = report;
-                messagesDiv.innerHTML = `<div class="success-message">✅ ${processedCount}件のデータを変換しました。</div>`;
+
+                showMessage(`✅ ${jsonArray.length}件のJSONデータを処理しました。${processedCount}件をレポートに変換しました。`, 'success');
             } catch (error) {
-                messagesDiv.innerHTML = `<div class="error-message">❌ エラー: ${error.message}</div>`;
+                showMessage(`❌ エラー: ${error.message}`, 'error');
             }
         }
 
-        function clearStep2() {
-            document.getElementById('inputCsv').value = '';
+        function clearAll() {
+            document.getElementById('inputJson').value = '';
+            document.getElementById('outputCsv').value = '';
             document.getElementById('outputReport').value = '';
-            document.getElementById('step2Messages').innerHTML = '';
+            document.getElementById('messages').innerHTML = '';
+        }
+
+        function copyCsv() {
+            const csv = document.getElementById('outputCsv').value;
+            if (!csv) {
+                alert('CSVがまだ生成されていません。先に変換実行してください。');
+                return;
+            }
+            navigator.clipboard.writeText(csv).then(() => {
+                alert('CSVをクリップボードにコピーしました。');
+            }).catch(() => {
+                alert('コピーに失敗しました。');
+            });
         }
 
         function copyReport() {
             const report = document.getElementById('outputReport').value;
             if (!report) {
-                alert('コピーする内容がありません。');
+                alert('レポートがまだ生成されていません。先に変換実行してください。');
                 return;
             }
             navigator.clipboard.writeText(report).then(() => {
                 alert('レポートをクリップボードにコピーしました。');
+            }).catch(() => {
+                alert('コピーに失敗しました。');
             });
         }
     </script>
