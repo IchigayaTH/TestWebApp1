@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>モダンタスク管理 - TaskFlow</title>
+    <title>ポイント取引管理ツール</title>
     <style>
         * {
             margin: 0;
@@ -15,89 +15,545 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 500px;
-            overflow: hidden;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
-            font-size: 2em;
-            margin-bottom: 5px;
-            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
         }
 
         .header p {
-            font-size: 0.9em;
-            opacity: 0.9;
+            color: #666;
+            font-size: 0.95em;
         }
 
-        .stats {
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .tabs {
             display: flex;
-            gap: 20px;
-            margin-top: 15px;
-            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
-        .stat {
-            text-align: center;
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
         }
 
-        .stat-number {
-            font-size: 1.5em;
-            font-weight: bold;
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
             display: block;
         }
 
-        .stat-label {
-            font-size: 0.8em;
-            opacity: 0.8;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .input-section {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .input-section input {
-            flex: 1;
-            padding: 12px 15px;
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 12px;
             border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: all 0.3s ease;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            resize: vertical;
+            transition: all 0.3s;
         }
 
-        .input-section input:focus {
+        textarea:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .btn-add {
-            padding: 12px 25px;
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 12px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .info-message {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            color: #1976d2;
+        }
+
+        .error-message {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            color: #c62828;
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            color: #2e7d32;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            font-size: 0.85em;
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .copy-btn:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 ポイント取引管理ツール</h1>
+            <p>JSONからCSVへの変換、タイムゾーン調整、データ変換を一括処理</p>
+        </div>
+
+        <div class="section">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="step1">ステップ1: JSON→CSV</button>
+                <button class="tab-btn" data-tab="step2">ステップ2: CSV→レポート</button>
+            </div>
+
+            <!-- Step 1: JSON to CSV -->
+            <div id="step1" class="tab-content active">
+                <h2>ステップ1: JSONをCSVに変換</h2>
+                <div class="info-message">
+                    ℹ️ JSON配列を貼り付けてください。「Add Point by QR Code」を含む項目のタイムゾーン（+00:00 → +07:00）を自動調整します。
+                </div>
+                
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">入力JSON:</label>
+                <textarea id="inputJson" placeholder='[{"id": "1", "created_at": "...", "reason": "...", "band_id": "...", ...}]'></textarea>
+                
+                <div class="button-group">
+                    <button onclick="executeStep1()">変換実行</button>
+                    <button class="btn-secondary" onclick="clearStep1()">クリア</button>
+                </div>
+
+                <div id="step1Messages"></div>
+
+                <label style="display: block; margin: 20px 0 8px 0; font-weight: 600;">出力CSV:</label>
+                <textarea id="outputCsv" readonly placeholder="結果がここに表示されます"></textarea>
+                
+                <div class="button-group">
+                    <button class="copy-btn" onclick="copyCsv()">📋 CSVをコピー</button>
+                </div>
+            </div>
+
+            <!-- Step 2: CSV to Report -->
+            <div id="step2" class="tab-content">
+                <h2>ステップ2: CSVをレポートに変換</h2>
+                <div class="info-message">
+                    ℹ️ ステップ1で生成したCSVを貼り付けるか、別のCSVを入力してください。レポート形式（タブ区切り）に変換します。
+                </div>
+
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">入力CSV:</label>
+                <textarea id="inputCsv" placeholder="CSVデータを貼り付けてください（ステップ1の出力を使用）"></textarea>
+                
+                <div class="button-group">
+                    <button onclick="executeStep2()">変換実行</button>
+                    <button class="btn-secondary" onclick="clearStep2()">クリア</button>
+                </div>
+
+                <div id="step2Messages"></div>
+
+                <label style="display: block; margin: 20px 0 8px 0; font-weight: 600;">出力レポート (タブ区切り):</label>
+                <textarea id="outputReport" readonly placeholder="結果がここに表示されます"></textarea>
+                
+                <div class="button-group">
+                    <button class="copy-btn" onclick="copyReport()">📋 レポートをコピー</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Band ID to Name mapping
+        const BAND_MAPPING = {
+            "3ff82f7d-337a-448e-9326-a5452b94ada3": "0.A Lot Of Tone",
+            "5baa17d8-44e3-48d9-802b-66e86c5fdcae": "1.HatoBito",
+            "07bb6741-ed4e-4688-8028-fb722d3079bf": "2.ANGeVIL",
+            "0a807a0c-fadf-4532-8cbb-f51dae7f948a": "3.ViNX",
+            "8ddaa071-8b3d-4db9-8fa5-e428aa644a22": "4.SeishinKakumei",
+            "698c5e8c-5dc9-40bd-a8db-4883b1e4ee20": "5.Castella",
+            "ece7b816-8375-4039-8f70-f7ff780ae8fe": "6.Choco",
+            "78426cd2-3a8c-4166-97b2-aee36d7c89e7": "7.KnightRes",
+            "157df557-17fc-47fd-a9de-b42b83510fc2": "8.Terashi"
+        };
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabName = e.target.dataset.tab;
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById(tabName).classList.add('active');
+                e.target.classList.add('active');
+            });
+        });
+
+        // Step 1: JSON to CSV
+        function adjustCreatedAtOffsets(jsonStr) {
+            const lines = jsonStr.split('\n');
+            const result = [];
+            let isQrBlock = false;
+
+            for (let line of lines) {
+                const trimmed = line.trim();
+
+                // Check for "reason" field with "Add Point by QR Code"
+                if (trimmed.startsWith('"reason"')) {
+                    isQrBlock = trimmed.toLowerCase().includes('add point by qr code');
+                }
+
+                // Adjust created_at offset if in QR block
+                if (isQrBlock && trimmed.startsWith('"created_at"') && trimmed.includes('+00:00')) {
+                    line = line.replace('+00:00', '+07:00');
+                }
+
+                // Reset flag at object end
+                if (trimmed.startsWith('},')) {
+                    isQrBlock = false;
+                }
+
+                result.push(line);
+            }
+
+            return result.join('\n');
+        }
+
+        function convertUtcToThai(dateStr) {
+            if (!dateStr || dateStr.trim() === '') return '';
+
+            try {
+                const date = new Date(dateStr);
+                if (isNaN(date.getTime())) return dateStr;
+
+                // Convert to Thailand timezone (UTC+7)
+                const thaiDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
+                
+                const year = thaiDate.getFullYear();
+                const month = String(thaiDate.getMonth() + 1).padStart(2, '0');
+                const day = String(thaiDate.getDate()).padStart(2, '0');
+                const hours = String(thaiDate.getHours()).padStart(2, '0');
+                const minutes = String(thaiDate.getMinutes()).padStart(2, '0');
+                const seconds = String(thaiDate.getSeconds()).padStart(2, '0');
+
+                return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+            } catch (e) {
+                return dateStr;
+            }
+        }
+
+        function quoteField(field) {
+            return '"' + (field || '').replace(/"/g, '""') + '"';
+        }
+
+        function executeStep1() {
+            const messagesDiv = document.getElementById('step1Messages');
+            messagesDiv.innerHTML = '';
+
+            try {
+                const input = document.getElementById('inputJson').value.trim();
+                if (!input) {
+                    messagesDiv.innerHTML = '<div class="error-message">JSONを入力してください。</div>';
+                    return;
+                }
+
+                // Adjust offsets
+                const adjusted = adjustCreatedAtOffsets(input);
+
+                // Parse JSON
+                let jsonArray;
+                try {
+                    jsonArray = JSON.parse(adjusted);
+                } catch (e) {
+                    messagesDiv.innerHTML = `<div class="error-message">❌ JSONのパースに失敗しました: ${e.message}</div>`;
+                    return;
+                }
+
+                if (!Array.isArray(jsonArray) || jsonArray.length === 0) {
+                    document.getElementById('outputCsv').value = '';
+                    messagesDiv.innerHTML = '<div class="error-message">JSON配列が空です。</div>';
+                    return;
+                }
+
+                // Get columns from first object
+                const columns = Object.keys(jsonArray[0]);
+
+                // Build CSV
+                const csvLines = [];
+                csvLines.push(columns.map(c => quoteField(c)).join(','));
+
+                for (const obj of jsonArray) {
+                    const values = [];
+                    for (const col of columns) {
+                        if (col === 'created_at') {
+                            const raw = obj[col] || '';
+                            const converted = convertUtcToThai(raw);
+                            values.push(quoteField(converted));
+                        } else {
+                            const val = obj[col] === null ? '' : String(obj[col] || '');
+                            values.push(quoteField(val));
+                        }
+                    }
+                    csvLines.push(values.join(','));
+                }
+
+                const csv = csvLines.join('\n');
+                document.getElementById('outputCsv').value = csv;
+                messagesDiv.innerHTML = `<div class="success-message">✅ ${jsonArray.length}件のデータを変換しました。</div>`;
+            } catch (error) {
+                messagesDiv.innerHTML = `<div class="error-message">❌ エラー: ${error.message}</div>`;
+            }
+        }
+
+        function clearStep1() {
+            document.getElementById('inputJson').value = '';
+            document.getElementById('outputCsv').value = '';
+            document.getElementById('step1Messages').innerHTML = '';
+        }
+
+        function copyCsv() {
+            const csv = document.getElementById('outputCsv').value;
+            if (!csv) {
+                alert('コピーする内容がありません。');
+                return;
+            }
+            navigator.clipboard.writeText(csv).then(() => {
+                alert('CSVをクリップボードにコピーしました。');
+            });
+        }
+
+        // Step 2: CSV to Report
+        function splitCsvLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    if (inQuotes && i + 1 < line.length && line[i + 1] === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current);
+            return result;
+        }
+
+        function executeStep2() {
+            const messagesDiv = document.getElementById('step2Messages');
+            messagesDiv.innerHTML = '';
+
+            try {
+                let csvInput = document.getElementById('inputCsv').value.trim();
+
+                // If empty, try to use output from step 1
+                if (!csvInput) {
+                    csvInput = document.getElementById('outputCsv').value.trim();
+                    if (!csvInput) {
+                        messagesDiv.innerHTML = '<div class="error-message">入力CSVが空です。</div>';
+                        return;
+                    }
+                }
+
+                const lines = csvInput.split(/\r?\n/).filter(l => l.trim());
+                if (lines.length <= 1) {
+                    messagesDiv.innerHTML = '<div class="error-message">有効なデータ行がありません。</div>';
+                    return;
+                }
+
+                // Parse header
+                const headerCols = splitCsvLine(lines[0]).map(h => h.trim().replace(/^"|"$/g, ''));
+                const idxCreatedAt = headerCols.indexOf('created_at');
+                const idxAmount = headerCols.indexOf('amount');
+                const idxPointsChange = headerCols.indexOf('points_change');
+                const idxReason = headerCols.indexOf('reason');
+                const idxBandId = headerCols.indexOf('band_id');
+
+                if (idxCreatedAt < 0 || idxAmount < 0 || idxPointsChange < 0 || idxReason < 0 || idxBandId < 0) {
+                    messagesDiv.innerHTML = '<div class="error-message">❌ 必要な列（created_at, amount, points_change, reason, band_id）がCSVに含まれていません。</div>';
+                    return;
+                }
+
+                const reportLines = [];
+                reportLines.push('Date\tBandName\tDescription\tNote\tPrice\tPoint\tMethod\tBy\tGet');
+
+                let processedCount = 0;
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = splitCsvLine(lines[i]);
+                    if (cols.length <= Math.max(idxPointsChange, Math.max(idxCreatedAt, idxAmount))) {
+                        continue;
+                    }
+
+                    const createdAt = cols[idxCreatedAt].replace(/"/g, '').trim();
+                    const amount = cols[idxAmount].replace(/"/g, '').trim();
+                    const points = cols[idxPointsChange].replace(/"/g, '').trim();
+                    const reason = idxReason < cols.length ? cols[idxReason].replace(/"/g, '').trim() : '';
+                    const bandId = idxBandId < cols.length ? cols[idxBandId].replace(/"/g, '').trim() : '';
+
+                    // Determine band name
+                    const bandName = BAND_MAPPING[bandId] || '99.Unknown';
+
+                    // Determine description and method
+                    let description, method;
+                    if (reason.toLowerCase().includes('ticket amount')) {
+                        description = '1.Ticket';
+                        method = '1.Online';
+                    } else if (reason.toLowerCase().includes('add point by qr code')) {
+                        description = '2.Cheki';
+                        method = '2.Cash';
+                    } else if (reason.toLowerCase().includes('pincheki order')) {
+                        description = '3.Pin Cheki';
+                        method = '1.Online';
+                    } else {
+                        description = '99.Other';
+                        method = '99.Other';
+                    }
+
+                    const outLine = [
+                        createdAt,
+                        bandName,
+                        description,
+                        '',
+                        amount,
+                        '',
+                        method,
+                        '',
+                        points
+                    ];
+
+                    reportLines.push(outLine.join('\t'));
+                    processedCount++;
+                }
+
+                const report = reportLines.join('\n');
+                document.getElementById('outputReport').value = report;
+                messagesDiv.innerHTML = `<div class="success-message">✅ ${processedCount}件のデータを変換しました。</div>`;
+            } catch (error) {
+                messagesDiv.innerHTML = `<div class="error-message">❌ エラー: ${error.message}</div>`;
+            }
+        }
+
+        function clearStep2() {
+            document.getElementById('inputCsv').value = '';
+            document.getElementById('outputReport').value = '';
+            document.getElementById('step2Messages').innerHTML = '';
+        }
+
+        function copyReport() {
+            const report = document.getElementById('outputReport').value;
+            if (!report) {
+                alert('コピーする内容がありません。');
+                return;
+            }
+            navigator.clipboard.writeText(report).then(() => {
+                alert('レポートをクリップボードにコピーしました。');
+            });
+        }
+    </script>
+</body>
+</html>
             color: white;
             border: none;
             border-radius: 10px;
